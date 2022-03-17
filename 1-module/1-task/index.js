@@ -7,4 +7,3 @@ function factorial(n) {
   
   return res;
 }
-
