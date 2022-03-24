@@ -25,16 +25,13 @@ function showSalary(users, age) {
   });
   
   let names = ageUsers.map((user) => {
-    let str = "\n"
-    return `${user.name}, ${user.balance} ${str}`;
+    return `${user.name}, ${user.balance}`;
   });
   
-  return names.join("").slice(0, -2)
+  return names.join("\n");
   
 }
 
 let users = [user1, user2]
 
 let result = showSalary(users, 30);
-
-console.log(result)
