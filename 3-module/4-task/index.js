@@ -31,7 +31,3 @@ function showSalary(users, age) {
   return names.join("\n");
   
 }
-
-let users = [user1, user2]
-
-let result = showSalary(users, 30);
