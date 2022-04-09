@@ -3,7 +3,9 @@ import createElement from '../../assets/lib/create-element.js';
 export default class Carousel {
   constructor(slides) {
     this.slides = slides;
+    this.currentSlideNumber = 0;
     this.elem = this.render();
+    initCarousel.call(this);
   }
 
   render() {
@@ -19,7 +21,7 @@ export default class Carousel {
       return `<div class="carousel__slide" data-id="${item.id}">
         <img src="/assets/images/carousel/${item.image}" class="carousel__img" alt="slide">
         <div class="carousel__caption">
-          <span class="carousel__price">€${item.price}</span>
+          <span class="carousel__price">€${item.price.toFixed(2)}</span>
           <div class="carousel__title">${item.name}</div>
           <button type="button" class="carousel__button">
             <img src="/assets/images/icons/plus-icon.svg" alt="icon">
@@ -47,33 +49,30 @@ export default class Carousel {
 
     this.carouselInner.addEventListener("click", event => {
       if (event.target.tagName === "BUTTON") {
+        let id = event.target.closest('[data-id]').dataset.id;
         const pressEvent = new CustomEvent("product-add", {
-          detail: slides.id,
+          detail: id,
           bubbles: true
         });
         this.carouselInner.dispatchEvent(pressEvent);
       }
     });
 
-    document.addEventListener("DOMContentLoaded", function() {
-      initCarousel() 
-    });
-    
     return carouselMain;
   }
 }
 
-
-
 function initCarousel() {
-  let carouselArrowRight = document.querySelector(".carousel__arrow_right");
-  let carouselArrowLeft = document.querySelector(".carousel__arrow_left");
-  let carouselInner2 = document.querySelector(".carousel__inner");
-  let carouselSlide = document.querySelector(".carousel__slide");
-  let carouselImg = document.querySelectorAll(".carousel__img");
+  let carouselArrowRight = this.elem.querySelector(".carousel__arrow_right");
+  let carouselArrowLeft = this.elem.querySelector(".carousel__arrow_left");
+  let carouselInner2 = this.elem.querySelector(".carousel__inner");
+  let carouselSlide = this.elem.querySelector(".carousel__slide");
+  let carouselImg = this.elem.querySelectorAll(".carousel__img");
   let offsetWidth = carouselSlide.offsetWidth;
-  let offset = 0;
-  let offsetMax = (carouselImg.length - 1) * offsetWidth ;
+  // let offset = 0;
+  let offsetMax = (carouselImg.length - 1) * offsetWidth;
+
+  let offset = -this.elem.offsetWidth * this.currentSlideNumber;
 
   carouselArrowLeft.style.display = "none";
 
@@ -91,15 +90,19 @@ function initCarousel() {
     }
   }
 
-  carouselArrowRight.addEventListener("click", function() {
-    offset += offsetWidth;
+  carouselArrowRight.addEventListener("click", () => {
+    this.currentSlideNumber += 1;
+    let offset = this.elem.offsetWidth * this.currentSlideNumber;
     carouselInner2.style.transform = `translateX(${-offset}px)`;
     arrowsHideShow()
+    
   });
 
-  carouselArrowLeft.addEventListener("click", function() {
-    offset -= offsetWidth;
+  carouselArrowLeft.addEventListener("click", () => {
+    this.currentSlideNumber -= 1;
+    let offset = this.elem.offsetWidth * this.currentSlideNumber;
     carouselInner2.style.transform = `translateX(${-offset}px)`;
+    
     arrowsHideShow()
   });
 
