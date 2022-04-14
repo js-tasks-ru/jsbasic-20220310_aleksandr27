@@ -66,27 +66,20 @@ function initCarousel() {
   let carouselArrowRight = this.elem.querySelector(".carousel__arrow_right");
   let carouselArrowLeft = this.elem.querySelector(".carousel__arrow_left");
   let carouselInner2 = this.elem.querySelector(".carousel__inner");
-  let carouselSlide = this.elem.querySelector(".carousel__slide");
-  let carouselImg = this.elem.querySelectorAll(".carousel__img");
-  let offsetWidth = carouselSlide.offsetWidth;
-  // let offset = 0;
-  let offsetMax = (carouselImg.length - 1) * offsetWidth;
-
-  let offset = -this.elem.offsetWidth * this.currentSlideNumber;
 
   carouselArrowLeft.style.display = "none";
 
   function arrowsHideShow() {
-    if (offsetMax <= offset) {
-      carouselArrowRight.style.display = "none";
-    } else if (offsetMax >= offset) {
-      carouselArrowRight.style.display = "flex";
+    if (this.currentSlideNumber === 0) {
+      carouselArrowLeft.style.display = "none";
+    } else {
+      carouselArrowLeft.style.display = "";
     }
 
-    if ( offset <= 0){
-      carouselArrowLeft.style.display = "none";
-    } else if (offsetMax >= offset) {
-      carouselArrowLeft.style.display = "flex";
+    if (this.currentSlideNumber === this.slides.length - 1) {
+      carouselArrowRight.style.display = "none";
+    } else {
+      carouselArrowRight.style.display = "";
     }
   }
 
@@ -94,16 +87,14 @@ function initCarousel() {
     this.currentSlideNumber += 1;
     let offset = this.elem.offsetWidth * this.currentSlideNumber;
     carouselInner2.style.transform = `translateX(${-offset}px)`;
-    arrowsHideShow()
-    
+    arrowsHideShow.call(this);
   });
 
   carouselArrowLeft.addEventListener("click", () => {
     this.currentSlideNumber -= 1;
     let offset = this.elem.offsetWidth * this.currentSlideNumber;
     carouselInner2.style.transform = `translateX(${-offset}px)`;
-    
-    arrowsHideShow()
+    arrowsHideShow.call(this);
   });
 
 }
