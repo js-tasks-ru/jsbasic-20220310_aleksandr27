@@ -5,9 +5,7 @@ export default class StepSlider {
     this.steps = steps;
     this.segments = steps - 1;
     this.render();
-
     this.addEventListeners();
-
     this.setValue(value);
   }
 
