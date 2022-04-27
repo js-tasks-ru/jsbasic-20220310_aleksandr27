@@ -57,6 +57,7 @@ export default class Cart {
       (sum, item) => sum + item.product.price * item.count,
       0
     );
+
   }
 }
 
